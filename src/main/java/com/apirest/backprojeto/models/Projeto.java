@@ -1,12 +1,19 @@
 package com.apirest.backprojeto.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.annotation.Generated;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+
+@Entity
 public class Projeto implements Serializable{
     private static final long serialVersionUID = 1L;
     
@@ -17,19 +24,21 @@ public class Projeto implements Serializable{
     private String titulo;
     private String descricao;
     private String cliente;
-    private String data;
-    private String pessoasEnvolvidas;
+	private String data;
+	
+	@OneToMany(mappedBy = "projeto")
+	@JsonManagedReference
+    private List<Pessoa> pessoasEnvolvidas = new ArrayList<>();  
 
 
 	public Projeto() {}
 
-	public Projeto(Integer id, String titulo, String descricao, String cliente, String data, String pessoasEnvolvidas) {
+	public Projeto(Integer id, String titulo, String descricao, String cliente, String data) {
 		this.id = id;
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.cliente = cliente;
 		this.data = data;
-		this.pessoasEnvolvidas = pessoasEnvolvidas;
 	}
 
 	@Override
@@ -120,13 +129,13 @@ public class Projeto implements Serializable{
 
 
 
-	public String getPessoasEnvolvidas() {
+	public List<Pessoa> getPessoasEnvolvidas() {
 		return pessoasEnvolvidas;
 	}
 
 
 
-	public void setPessoasEnvolvidas(String pessoasEnvolvidas) {
+	public void setPessoasEnvolvidas(List<Pessoa> pessoasEnvolvidas) {
 		this.pessoasEnvolvidas = pessoasEnvolvidas;
 	}
     
