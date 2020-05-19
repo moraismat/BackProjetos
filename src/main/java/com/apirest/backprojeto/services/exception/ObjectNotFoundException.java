@@ -1,9 +1,7 @@
 package com.apirest.backprojeto.services.exception;
 
-
-
 public class ObjectNotFoundException extends RuntimeException{
-    private static final long serialVersionUD = 1L;
+    private static final long serialVersionUD = 1l;
 
     public ObjectNotFoundException(String msg){
         super(msg);
