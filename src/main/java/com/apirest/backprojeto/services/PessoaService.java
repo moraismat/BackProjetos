@@ -1,10 +1,9 @@
 package com.apirest.backprojeto.services;
 
-import java.util.List;
 import java.util.Optional;
 
-import com.apirest.backprojeto.models.Projeto;
-import com.apirest.backprojeto.repositories.ProjetoRepository;
+import com.apirest.backprojeto.models.Pessoa;
+import com.apirest.backprojeto.repositories.PessoaRepository;
 import com.apirest.backprojeto.services.exception.DataIntegrityException;
 import com.apirest.backprojeto.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,29 +11,24 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProjetoService {
+public class PessoaService {
 
     @Autowired
-    private ProjetoRepository repo;
+    private PessoaRepository repo;
 
-    public Projeto find(Integer id){
-        Optional<Projeto> obj = repo.findById(id);
+    public Pessoa find(Integer id){
+        Optional<Pessoa> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
-                    "Objeto não encontrado! Id: " + id + ", Tipo: " + Projeto.class.getName())); 
+                    "Objeto não encontrado! Id: " + id + ", Tipo: " + Pessoa.class.getName())); 
 
     }
 
-    public List<Projeto> findAll(){    
-        return repo.findAll();
-    }
-
-
-    public Projeto insert(Projeto obj) {
+    public Pessoa insert(Pessoa obj) {
         obj.setId(null);
         return repo.save(obj);
     }
 
-    public Projeto update(Projeto obj){
+    public Pessoa update(Pessoa obj){
         find(obj.getId());
 
         return repo.save(obj);

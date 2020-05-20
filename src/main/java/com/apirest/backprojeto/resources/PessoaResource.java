@@ -1,12 +1,9 @@
 package com.apirest.backprojeto.resources;
 
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import com.apirest.backprojeto.DTO.ProjetoDTO;
-import com.apirest.backprojeto.models.Projeto;
-import com.apirest.backprojeto.services.ProjetoService;
+import com.apirest.backprojeto.models.Pessoa;
+import com.apirest.backprojeto.services.PessoaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +16,23 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 @RestController
-@RequestMapping(value="/projetos")
-public class ProjetoResource {
+@RequestMapping(value="/pessoa")
+public class PessoaResource {
     
     @Autowired    
-    private ProjetoService service;
+    private PessoaService service;
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
-    public ResponseEntity<Projeto> find(@PathVariable Integer id ) {
+    public ResponseEntity<Pessoa> find(@PathVariable Integer id ) {
     
-        Projeto obj = service.find(id);
+        Pessoa obj = service.find(id);
 
         return ResponseEntity.ok().body(obj);
 
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@RequestBody Projeto obj){
+    public ResponseEntity<Void> insert(@RequestBody Pessoa obj){
         obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(obj.getId()).toUri();
@@ -45,7 +42,7 @@ public class ProjetoResource {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Void> update(@RequestBody Projeto obj, @PathVariable Integer id){
+    public ResponseEntity<Void> update(@RequestBody Pessoa obj, @PathVariable Integer id){
         obj.setId(id); 
         obj = service.update(obj);
 
@@ -57,16 +54,6 @@ public class ProjetoResource {
         service.delete(id);
         return ResponseEntity.noContent().build();
 
-    }
-    
-    @RequestMapping(method=RequestMethod.GET)
-    public ResponseEntity<List<ProjetoDTO>> findAll() {
-
-        List<Projeto> list = service.findAll();
-        List<ProjetoDTO> listDTO = list.stream().map(obj -> new ProjetoDTO(obj)).collect(Collectors.toList());
-
-        return ResponseEntity.ok().body(listDTO);
-
-    } 
+    }	    
 
 }
