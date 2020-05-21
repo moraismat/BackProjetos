@@ -45,7 +45,9 @@ public class ProjetoService {
     @Transactional
     public Projeto insert(Projeto obj) {
         obj.setId(null);
-        return repo.save(obj);
+        repo.save(obj);
+        repoPessoa.saveAll(obj.getPessoasEnvolvidas());
+        return obj;
     }
 
     public Projeto update(Projeto obj){
@@ -63,7 +65,6 @@ public class ProjetoService {
             throw new DataIntegrityException("Não é possivel excluir uma Projeto que possui Pessoas Envolvidas"); 
         }
     }
-
     public Page<Projeto> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
@@ -89,7 +90,6 @@ public class ProjetoService {
         return proj;
         
     }
-    
     
 
 }
