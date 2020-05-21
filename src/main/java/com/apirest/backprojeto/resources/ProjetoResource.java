@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.apirest.backprojeto.DTO.ProjetoDTO;
+import com.apirest.backprojeto.DTO.ProjetoNewDTO;
 import com.apirest.backprojeto.models.Projeto;
 import com.apirest.backprojeto.resources.utils.URL;
 import com.apirest.backprojeto.services.ProjetoService;
@@ -39,7 +40,9 @@ public class ProjetoResource {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@RequestBody Projeto obj){
+    public ResponseEntity<Void> insert(@RequestBody ProjetoNewDTO objDTO){
+        Projeto obj = projetoService.fromDTO(objDTO);
+
         obj = projetoService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(obj.getId()).toUri();
@@ -54,6 +57,14 @@ public class ProjetoResource {
         obj = projetoService.update(obj);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable Integer id ) {
+        projetoService.delete(id);
+
+        return ResponseEntity.noContent().build();
+
     }
 
     

@@ -1,7 +1,10 @@
 package com.apirest.backprojeto.services;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import com.apirest.backprojeto.services.exception.DataIntegrityException;
 import com.apirest.backprojeto.services.exception.ObjectNotFoundException;
@@ -12,7 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+
+import com.apirest.backprojeto.DTO.ProjetoNewDTO;
+import com.apirest.backprojeto.models.Pessoa;
 import com.apirest.backprojeto.models.Projeto;
+import com.apirest.backprojeto.repositories.PessoaRepository;
 import com.apirest.backprojeto.repositories.ProjetoRepository;
 
 @Service
@@ -20,6 +27,9 @@ public class ProjetoService {
 
     @Autowired
     private ProjetoRepository repo;
+
+    @Autowired
+    private PessoaRepository repoPessoa;
 
     public Projeto find(Integer id){
         Optional<Projeto> obj = repo.findById(id);
@@ -32,7 +42,7 @@ public class ProjetoService {
         return repo.findAll();
     }
 
-
+    @Transactional
     public Projeto insert(Projeto obj) {
         obj.setId(null);
         return repo.save(obj);
@@ -53,6 +63,7 @@ public class ProjetoService {
             throw new DataIntegrityException("Não é possivel excluir uma Projeto que possui Pessoas Envolvidas"); 
         }
     }
+
     public Page<Projeto> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
@@ -69,6 +80,16 @@ public class ProjetoService {
 		List<Projeto> projetos = repo.findAllById(ids);*/
 		return repo.findByCliente(cliente);	
     }
+
+    public Projeto fromDTO(ProjetoNewDTO obj){
+        Projeto proj = new Projeto(null,obj.getTitulo(),obj.getDescricao(), obj.getCliente(), obj.getData());
+        Pessoa pessoa = new Pessoa(null, obj.getNome(), obj.getEmail(), obj.getCpf(), proj);
+        proj.getPessoasEnvolvidas().addAll(Arrays.asList(pessoa));
+       
+        return proj;
+        
+    }
+    
     
 
 }
