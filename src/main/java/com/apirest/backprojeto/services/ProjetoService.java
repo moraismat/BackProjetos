@@ -27,7 +27,7 @@ public class ProjetoService {
                     "Objeto não encontrado! Id: " + id + ", Tipo: " + Projeto.class.getName())); 
 
     }
-    
+
     public List<Projeto> findAll(){    
         return repo.findAll();
     }
@@ -58,10 +58,17 @@ public class ProjetoService {
 		return repo.findAll(pageRequest);
     }
     
-    public List<Projeto> search(String titulo) {
+    public List<Projeto> searchTitulo(String titulo) {
 		/*PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		List<Projeto> projetos = repo.findAllById(ids);*/
 		return repo.findByTitulo(titulo);	
-	}
+    }
+    
+    public List<Projeto> searchCliente(String cliente) {
+		/*PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		List<Projeto> projetos = repo.findAllById(ids);*/
+		return repo.findByCliente(cliente);	
+    }
+    
 
 }

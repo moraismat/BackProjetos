@@ -30,7 +30,6 @@ public class Projeto implements Serializable{
 	@JsonManagedReference
     private List<Pessoa> pessoasEnvolvidas = new ArrayList<>();  
 
-
 	public Projeto() {}
 
 	public Projeto(Integer id, String titulo, String descricao, String cliente, String data) {

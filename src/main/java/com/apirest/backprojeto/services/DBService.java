@@ -25,7 +25,7 @@ public class DBService {
         Projeto proj1 = new Projeto(null, "API", "Criando back-end para Projetos", "Matheus Morais", "18/05/20");
         Projeto proj2 = new Projeto(null, "CODATA", "APP CODATA", "Helder", "10/03/18");
         Projeto proj3 = new Projeto(null, "ACI", "Aplicação S-intex", "Iure", "01/10/17");
-        Projeto proj4 = new Projeto(null, "CI", "Aplicação Lavid", "Maritan", "18/05/20");
+        Projeto proj4 = new Projeto(null, "CI", "Aplicação Lavid", "Matheus Morais", "18/05/20");
         Projeto proj5 = new Projeto(null, "UFPB", "Criando Aplicação SIGAA", "STI", "30/01/16");
        
         Pessoa p1 = new Pessoa(null, "Matheus Araujo de Morais", "70240980457", "morais629@gmail.com", proj1);

@@ -26,12 +26,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class ProjetoResource {
     
     @Autowired    
-    private ProjetoService service;
+    private ProjetoService projetoService;
+
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<Projeto> find(@PathVariable Integer id ) {
     
-        Projeto obj = service.find(id);
+        Projeto obj = projetoService.find(id);
 
         return ResponseEntity.ok().body(obj);
 
@@ -39,7 +40,7 @@ public class ProjetoResource {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> insert(@RequestBody Projeto obj){
-        obj = service.insert(obj);
+        obj = projetoService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(obj.getId()).toUri();
 
@@ -50,22 +51,16 @@ public class ProjetoResource {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> update(@RequestBody Projeto obj, @PathVariable Integer id){
         obj.setId(id); 
-        obj = service.update(obj);
+        obj = projetoService.update(obj);
 
         return ResponseEntity.noContent().build();
     }
-    
-    @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-    public ResponseEntity<Void> delete(@PathVariable Integer id ) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
 
-    }
     
     @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<List<ProjetoDTO>> findAll() {
 
-        List<Projeto> list = service.findAll();
+        List<Projeto> list = projetoService.findAll();
         List<ProjetoDTO> listDTO = list.stream().map(obj -> new ProjetoDTO(obj)).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(listDTO);
@@ -79,24 +74,35 @@ public class ProjetoResource {
            @RequestParam(value="orderBy", defaultValue = "titulo") String orderBy, 
            @RequestParam(value="direction", defaultValue = "ASC") String direction    ) {
 
-        Page<Projeto> list = service.findPage(page,linesPerPage,orderBy,direction);
+        Page<Projeto> list = projetoService.findPage(page,linesPerPage,orderBy,direction);
         Page<ProjetoDTO> listDTO = list.map(obj -> new ProjetoDTO(obj));
 
         return ResponseEntity.ok().body(listDTO);
 
     } 
 
-    @RequestMapping(value="/pesquisa",  method=RequestMethod.GET)
+    @RequestMapping(value="/pesquisa/titulo",  method=RequestMethod.GET)
     public ResponseEntity<List<Projeto>> findByTitulo(@RequestParam(value="titulo", defaultValue = "0") String titulo) {
 
         String nomeDecoded = URL.decodeParam(titulo);
-        List<Projeto> list = service.search(nomeDecoded);
+        List<Projeto> list = projetoService.searchTitulo(nomeDecoded);
        /* List<ProjetoDTO> listDTO = list.stream().map(obj -> new ProjetoDTO(obj)).collect(Collectors.toList());*/
 
         return ResponseEntity.ok().body(list);
 
     } 
 
+
+    @RequestMapping(value="/pesquisa/cliente",  method=RequestMethod.GET)
+    public ResponseEntity<List<Projeto>> findByCliente(@RequestParam(value="cliente", defaultValue = "0") String cliente) {
+
+        List<Projeto> list = projetoService.searchCliente(cliente);
+       /* List<ProjetoDTO> listDTO = list.stream().map(obj -> new ProjetoDTO(obj)).collect(Collectors.toList());*/
+
+        return ResponseEntity.ok().body(list);
+
+    } 
+    
 
 
 }
