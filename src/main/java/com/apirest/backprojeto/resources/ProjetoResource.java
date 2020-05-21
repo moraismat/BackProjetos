@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.apirest.backprojeto.DTO.ProjetoDTO;
 import com.apirest.backprojeto.models.Projeto;
+import com.apirest.backprojeto.resources.utils.URL;
 import com.apirest.backprojeto.services.ProjetoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,17 @@ public class ProjetoResource {
         Page<ProjetoDTO> listDTO = list.map(obj -> new ProjetoDTO(obj));
 
         return ResponseEntity.ok().body(listDTO);
+
+    } 
+
+    @RequestMapping(value="/pesquisa",  method=RequestMethod.GET)
+    public ResponseEntity<List<Projeto>> findByTitulo(@RequestParam(value="titulo", defaultValue = "0") String titulo) {
+
+        String nomeDecoded = URL.decodeParam(titulo);
+        List<Projeto> list = service.search(nomeDecoded);
+       /* List<ProjetoDTO> listDTO = list.stream().map(obj -> new ProjetoDTO(obj)).collect(Collectors.toList());*/
+
+        return ResponseEntity.ok().body(list);
 
     } 
 

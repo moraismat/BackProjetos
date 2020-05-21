@@ -56,6 +56,12 @@ public class ProjetoService {
     public Page<Projeto> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
+    }
+    
+    public List<Projeto> search(String titulo) {
+		/*PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		List<Projeto> projetos = repo.findAllById(ids);*/
+		return repo.findByTitulo(titulo);	
 	}
 
 }
