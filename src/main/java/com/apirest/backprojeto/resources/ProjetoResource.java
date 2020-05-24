@@ -1,13 +1,16 @@
 package com.apirest.backprojeto.resources;
 
 import java.net.URI;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.apirest.backprojeto.DTO.ProjetoDTO;
 import com.apirest.backprojeto.DTO.ProjetoNewDTO;
+import com.apirest.backprojeto.models.Pessoa;
 import com.apirest.backprojeto.models.Projeto;
 import com.apirest.backprojeto.resources.utils.URL;
+import com.apirest.backprojeto.services.PessoaService;
 import com.apirest.backprojeto.services.ProjetoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 @RestController
-@RequestMapping(value="/projetos")
+@RequestMapping(value="/api")
 public class ProjetoResource {
     
     @Autowired    
@@ -66,9 +69,8 @@ public class ProjetoResource {
         return ResponseEntity.noContent().build();
 
     }
-
     
-    @RequestMapping(method=RequestMethod.GET)
+    @RequestMapping(value="/projetos",method=RequestMethod.GET)
     public ResponseEntity<List<ProjetoDTO>> findAll() {
 
         List<Projeto> list = projetoService.findAll();

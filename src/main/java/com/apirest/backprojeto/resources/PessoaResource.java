@@ -38,8 +38,17 @@ public class PessoaResource {
                 .buildAndExpand(obj.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
-
     }
+
+    @RequestMapping(value="/add/{id}", method = RequestMethod.POST)
+    public ResponseEntity<Void> insertPessoa(@RequestBody Pessoa obj, @PathVariable Integer id){
+        obj = service.addPessoa(obj,id);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(obj.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
+    }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> update(@RequestBody Pessoa obj, @PathVariable Integer id){

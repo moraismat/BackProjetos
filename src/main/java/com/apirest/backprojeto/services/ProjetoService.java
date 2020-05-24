@@ -47,13 +47,16 @@ public class ProjetoService {
         obj.setId(null);
         repo.save(obj);
         repoPessoa.saveAll(obj.getPessoasEnvolvidas());
+
         return obj;
     }
 
     public Projeto update(Projeto obj){
         find(obj.getId());
+        repo.save(obj);
+        repoPessoa.saveAll(obj.getPessoasEnvolvidas());
 
-        return repo.save(obj);
+        return obj;
     }
     
     public void delete(Integer id) {

@@ -36,6 +36,7 @@ public class DBService {
         Pessoa p6 = new Pessoa(null, "Jeronimo Wallage Araujo de Morais", "11369527841", "jeronimo@gmail.com", proj3);
         Pessoa p7 = new Pessoa(null, "Alice Morais", "10236058985", "alice@gmail.com", proj4);
         Pessoa p8 = new Pessoa(null, "Viviane Araujo", "11425689752", "viviane@gmail.com", proj5);
+        Pessoa p9 = new Pessoa(null, "Viviane asda", "11425689752", "viviane@gmail.com", proj1);
         
         proj1.getPessoasEnvolvidas().addAll(Arrays.asList(p1, p2,p3));
         proj2.getPessoasEnvolvidas().addAll(Arrays.asList(p4));
@@ -45,5 +46,9 @@ public class DBService {
 
         projetoRepository.saveAll(Arrays.asList(proj1,proj2,proj3,proj4,proj5));
         pessoaRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7,p8));
+
+
+        proj1.getPessoasEnvolvidas().addAll(Arrays.asList(p9));
+        projetoRepository.saveAll(Arrays.asList(proj1));
     }
 }
