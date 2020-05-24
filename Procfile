@@ -1,1 +1,1 @@
-mysql://bdbc08ecf33e93:b3839848@us-cdbr-east-06.cleardb.net/heroku_8effe8e1cf0851a?reconnect=true
+web: java -Dserver.port=$PORT -Dspring.profiles.active=prod $JAVA_OPTS -jar target/backprojeto-0.0.1-SNAPSHOT.jar
