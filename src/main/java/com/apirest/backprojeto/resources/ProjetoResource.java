@@ -26,7 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 @RestController
-@RequestMapping(value="/api")
+@RequestMapping(value="/projetos")
 public class ProjetoResource {
     
     @Autowired    
@@ -70,7 +70,7 @@ public class ProjetoResource {
 
     }
     
-    @RequestMapping(value="/projetos",method=RequestMethod.GET)
+    @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<List<ProjetoDTO>> findAll() {
 
         List<Projeto> list = projetoService.findAll();
