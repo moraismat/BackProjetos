@@ -71,6 +71,7 @@ public class ProjetoResource {
         return ResponseEntity.ok().body(obj);
 
     }
+    /*
     @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<List<ProjetoDTO>> findAllProjeto() {
 
@@ -79,7 +80,13 @@ public class ProjetoResource {
 
         return ResponseEntity.ok().body(listDTO);
 
-    } 
+    } */
+
+    @RequestMapping(method = RequestMethod.GET)
+    public List<Projeto> listarProjeto(){
+        return projetoService.findAll();
+
+    }
 
     @RequestMapping(value="/page", method=RequestMethod.GET)
     public ResponseEntity<Page<ProjetoDTO>> findPage(
