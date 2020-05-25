@@ -22,7 +22,7 @@ public class PessoaResource {
     @Autowired    
     private PessoaService service;
 
-    @RequestMapping(value="/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/pessoa/{id}", method=RequestMethod.GET)
     public ResponseEntity<Pessoa> find(@PathVariable Integer id ) {
     
         Pessoa obj = service.find(id);
@@ -31,7 +31,7 @@ public class PessoaResource {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value="/pessoa", method = RequestMethod.POST)
     public ResponseEntity<Void> insert(@RequestBody Pessoa obj){
         obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -40,7 +40,7 @@ public class PessoaResource {
         return ResponseEntity.created(uri).build();
     }
 
-    @RequestMapping(value="/add/{id}", method = RequestMethod.POST)
+    @RequestMapping(value="/pessoa/add/{id}", method = RequestMethod.POST)
     public ResponseEntity<Void> insertPessoa(@RequestBody Pessoa obj, @PathVariable Integer id){
         obj = service.addPessoa(obj,id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -50,7 +50,7 @@ public class PessoaResource {
     }
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/pessoa/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> update(@RequestBody Pessoa obj, @PathVariable Integer id){
         obj.setId(id); 
         obj = service.update(obj);
@@ -58,7 +58,7 @@ public class PessoaResource {
         return ResponseEntity.noContent().build();
     }
     
-    @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+    @RequestMapping(value="/pessoa/{id}", method=RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable Integer id ) {
         service.delete(id);
         return ResponseEntity.noContent().build();

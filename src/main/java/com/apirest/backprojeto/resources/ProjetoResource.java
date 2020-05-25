@@ -31,19 +31,12 @@ public class ProjetoResource {
     
     @Autowired    
     private ProjetoService projetoService;
-
-
-    @RequestMapping(value="/{id}", method=RequestMethod.GET)
-    public ResponseEntity<Projeto> find(@PathVariable Integer id ) {
-    
-        Projeto obj = projetoService.find(id);
-
-        return ResponseEntity.ok().body(obj);
-
-    }
+       
+    @Autowired    
+    private PessoaService service;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@RequestBody ProjetoNewDTO objDTO){
+    public ResponseEntity<Void> insertProjeto(@RequestBody ProjetoNewDTO objDTO){
         Projeto obj = projetoService.fromDTO(objDTO);
 
         obj = projetoService.insert(obj);
@@ -55,7 +48,7 @@ public class ProjetoResource {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Void> update(@RequestBody Projeto obj, @PathVariable Integer id){
+    public ResponseEntity<Void> updateProjeto(@RequestBody Projeto obj, @PathVariable Integer id){
         obj.setId(id); 
         obj = projetoService.update(obj);
 
@@ -63,15 +56,23 @@ public class ProjetoResource {
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-    public ResponseEntity<Void> delete(@PathVariable Integer id ) {
+    public ResponseEntity<Void> deleteProjeto(@PathVariable Integer id ) {
         projetoService.delete(id);
 
         return ResponseEntity.noContent().build();
 
     }
     
+    @RequestMapping(value="/{id}", method=RequestMethod.GET)
+    public ResponseEntity<Projeto> findProjeto(@PathVariable Integer id ) {
+    
+        Projeto obj = projetoService.find(id);
+
+        return ResponseEntity.ok().body(obj);
+
+    }
     @RequestMapping(method=RequestMethod.GET)
-    public ResponseEntity<List<ProjetoDTO>> findAll() {
+    public ResponseEntity<List<ProjetoDTO>> findAllProjeto() {
 
         List<Projeto> list = projetoService.findAll();
         List<ProjetoDTO> listDTO = list.stream().map(obj -> new ProjetoDTO(obj)).collect(Collectors.toList());
@@ -114,7 +115,40 @@ public class ProjetoResource {
 
         return ResponseEntity.ok().body(list);
 
-    } 
+    }
+    @RequestMapping(value="/pessoa/{id}", method=RequestMethod.GET)
+    public ResponseEntity<Pessoa> find(@PathVariable Integer id ) {
+    
+        Pessoa obj = service.find(id);
+
+        return ResponseEntity.ok().body(obj);
+
+    }
+
+    @RequestMapping(value="/pessoa/{id}", method = RequestMethod.POST)
+    public ResponseEntity<Void> insertPessoa(@RequestBody Pessoa obj, @PathVariable Integer id){
+        obj = service.addPessoa(obj,id);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(obj.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
+    }
+
+
+    @RequestMapping(value = "/pessoa/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Void> updatePessoa(@RequestBody Pessoa obj, @PathVariable Integer id){
+        obj.setId(id); 
+        obj = service.update(obj);
+
+        return ResponseEntity.noContent().build();
+    }
+    
+    @RequestMapping(value="/pessoa/{id}", method=RequestMethod.DELETE)
+    public ResponseEntity<Void> deletePessoa(@PathVariable Integer id ) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+
+    }
     
 
 
