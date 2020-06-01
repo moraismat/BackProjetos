@@ -1,12 +1,9 @@
 package com.apirest.backprojeto.services;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import com.apirest.backprojeto.models.Pessoa;
-import com.apirest.backprojeto.models.Projeto;
 import com.apirest.backprojeto.repositories.PessoaRepository;
-import com.apirest.backprojeto.repositories.ProjetoRepository;
 import com.apirest.backprojeto.services.exception.DataIntegrityException;
 import com.apirest.backprojeto.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +19,6 @@ public class PessoaService {
     @Autowired
     private ProjetoService projetoService;
 
-    @Autowired
-    private ProjetoRepository projetoRepository;
 
     public Pessoa find(Integer id){
         Optional<Pessoa> obj = repo.findById(id);

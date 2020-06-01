@@ -68,6 +68,7 @@ public class ProjetoService {
             throw new DataIntegrityException("Não é possivel excluir uma Projeto que possui Pessoas Envolvidas"); 
         }
     }
+
     public Page<Projeto> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
@@ -92,6 +93,10 @@ public class ProjetoService {
        
         return proj;
         
+    }
+
+    public void deletarProjeto(Projeto obj){
+        repo.delete(obj);
     }
     
 

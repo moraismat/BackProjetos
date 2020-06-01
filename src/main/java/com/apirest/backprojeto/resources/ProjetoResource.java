@@ -3,8 +3,8 @@ package com.apirest.backprojeto.resources;
 import java.net.URI;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+import com.apirest.backprojeto.DTO.PesquisaDTO;
 import com.apirest.backprojeto.DTO.ProjetoDTO;
 import com.apirest.backprojeto.DTO.ProjetoNewDTO;
 import com.apirest.backprojeto.models.Pessoa;
@@ -16,6 +16,7 @@ import com.apirest.backprojeto.services.ProjetoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping(value="/projetos")
 public class ProjetoResource {
@@ -35,7 +36,7 @@ public class ProjetoResource {
     @Autowired    
     private PessoaService service;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<Void> insertProjeto(@RequestBody ProjetoNewDTO objDTO){
         Projeto obj = projetoService.fromDTO(objDTO);
 
@@ -60,28 +61,18 @@ public class ProjetoResource {
         projetoService.delete(id);
 
         return ResponseEntity.noContent().build();
-
     }
-    
+
+    @CrossOrigin
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<Projeto> findProjeto(@PathVariable Integer id ) {
-    
         Projeto obj = projetoService.find(id);
 
         return ResponseEntity.ok().body(obj);
-
     }
-    /*
-    @RequestMapping(method=RequestMethod.GET)
-    public ResponseEntity<List<ProjetoDTO>> findAllProjeto() {
-
-        List<Projeto> list = projetoService.findAll();
-        List<ProjetoDTO> listDTO = list.stream().map(obj -> new ProjetoDTO(obj)).collect(Collectors.toList());
-
-        return ResponseEntity.ok().body(listDTO);
-
-    } */
-
+    
+    
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public List<Projeto> listarProjeto(){
         return projetoService.findAll();
@@ -103,16 +94,15 @@ public class ProjetoResource {
     } 
 
     @RequestMapping(value="/pesquisa/titulo",  method=RequestMethod.GET)
-    public ResponseEntity<List<Projeto>> findByTitulo(@RequestParam(value="titulo", defaultValue = "0") String titulo) {
+    public ResponseEntity<List<Projeto>> findByTitulo(@RequestBody PesquisaDTO titulo) {
 
-        String nomeDecoded = URL.decodeParam(titulo);
+        String nomeDecoded = URL.decodeParam(titulo.getTitulo());
         List<Projeto> list = projetoService.searchTitulo(nomeDecoded);
        /* List<ProjetoDTO> listDTO = list.stream().map(obj -> new ProjetoDTO(obj)).collect(Collectors.toList());*/
-
+        System.out.println(nomeDecoded);
         return ResponseEntity.ok().body(list);
 
     } 
-
 
     @RequestMapping(value="/pesquisa/cliente",  method=RequestMethod.GET)
     public ResponseEntity<List<Projeto>> findByCliente(@RequestParam(value="cliente", defaultValue = "0") String cliente) {
@@ -156,7 +146,13 @@ public class ProjetoResource {
         return ResponseEntity.noContent().build();
 
     }
-    
 
+    @RequestMapping(value = "/remove", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteProjeto(@RequestBody Projeto projeto){
+        projetoService.deletarProjeto(projeto);
+
+        return ResponseEntity.noContent().build();
+    }
+    
 
 }
