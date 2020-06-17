@@ -3,10 +3,10 @@ package com.apirest.backprojeto.resources;
 import java.net.URI;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.apirest.backprojeto.DTO.PesquisaDTO;
 import com.apirest.backprojeto.DTO.ProjetoDTO;
-import com.apirest.backprojeto.DTO.ProjetoNewDTO;
 import com.apirest.backprojeto.models.Pessoa;
 import com.apirest.backprojeto.models.Projeto;
 import com.apirest.backprojeto.resources.utils.URL;
@@ -36,9 +36,8 @@ public class ProjetoResource {
     @Autowired    
     private PessoaService service;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<Void> insertProjeto(@RequestBody ProjetoNewDTO objDTO){
-        Projeto obj = projetoService.fromDTO(objDTO);
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> insertProjeto(@RequestBody Projeto obj){
 
         obj = projetoService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -48,6 +47,7 @@ public class ProjetoResource {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> updateProjeto(@RequestBody Projeto obj, @PathVariable Integer id){
         obj.setId(id); 
@@ -56,6 +56,7 @@ public class ProjetoResource {
         return ResponseEntity.noContent().build();
     }
 
+    @CrossOrigin 
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
     public ResponseEntity<Void> deleteProjeto(@PathVariable Integer id ) {
         projetoService.delete(id);
@@ -63,7 +64,6 @@ public class ProjetoResource {
         return ResponseEntity.noContent().build();
     }
 
-    @CrossOrigin
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<Projeto> findProjeto(@PathVariable Integer id ) {
         Projeto obj = projetoService.find(id);
@@ -71,8 +71,7 @@ public class ProjetoResource {
         return ResponseEntity.ok().body(obj);
     }
     
-    
-    @CrossOrigin
+
     @RequestMapping(method = RequestMethod.GET)
     public List<Projeto> listarProjeto(){
         return projetoService.findAll();
@@ -93,14 +92,14 @@ public class ProjetoResource {
 
     } 
 
-    @RequestMapping(value="/pesquisa/titulo",  method=RequestMethod.GET)
-    public ResponseEntity<List<Projeto>> findByTitulo(@RequestBody PesquisaDTO titulo) {
+    @RequestMapping(value="/pesquisa",  method=RequestMethod.GET)
+    public ResponseEntity<List<ProjetoDTO>> findByTitulo(@RequestParam(value="titulo", defaultValue = "0" ) String titulo) {
 
-        String nomeDecoded = URL.decodeParam(titulo.getTitulo());
+        String nomeDecoded = URL.decodeParam(titulo);
         List<Projeto> list = projetoService.searchTitulo(nomeDecoded);
-       /* List<ProjetoDTO> listDTO = list.stream().map(obj -> new ProjetoDTO(obj)).collect(Collectors.toList());*/
-        System.out.println(nomeDecoded);
-        return ResponseEntity.ok().body(list);
+        List<ProjetoDTO> listDTO = list.stream().map(obj -> new ProjetoDTO(obj)).collect(Collectors.toList());
+        
+        return  ResponseEntity.ok().body(listDTO);
 
     } 
 

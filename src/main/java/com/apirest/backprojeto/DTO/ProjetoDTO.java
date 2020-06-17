@@ -12,7 +12,8 @@ public class ProjetoDTO implements Serializable{
 
     private Integer id;
     private String titulo;
-    private String descricao;
+	private String descricao;
+	private String cliente;
     private String data;
     private List<Pessoa> pessoasEnvolvidas;
  
@@ -21,9 +22,10 @@ public class ProjetoDTO implements Serializable{
     public ProjetoDTO(Projeto obj){
         id = obj.getId();
         titulo = obj.getTitulo();
-        descricao = obj.getDescricao();
+		descricao = obj.getDescricao();
+		cliente = obj.getCliente();
         data = obj.getData();
-        pessoasEnvolvidas = obj.getPessoasEnvolvidas();
+		pessoasEnvolvidas = obj.getPessoasEnvolvidas();
     }
 
 	public Integer getId() {
@@ -68,6 +70,14 @@ public class ProjetoDTO implements Serializable{
 
 	public void setPessoasEnvolvidas(List<Pessoa> pessoasEnvolvidas) {
 		this.pessoasEnvolvidas = pessoasEnvolvidas;
+	}
+
+	public String getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(String cliente) {
+		this.cliente = cliente;
 	}
 
 } 
